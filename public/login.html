@@ -1,19 +1,10 @@
-<!--index.html-->
+<!--login.html-->
 
 <!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>First Page</title>
-
-<!--CSS-->
-<link rel="stylesheet" href="/jquery-ui/themes/base/jquery-ui.css">
-
-<!--Javascript-->
-<script src="/jquery/jquery.min.js"></script>
-<script src="/jquery-ui/jquery-ui.min.js"></script>
-
-
 </head>
 <body>
     <!--put here-->
@@ -22,38 +13,49 @@
 
     <div id="tabs">
         <ul>
-          <li><a href="#tabs-1">1-แบบฟอร์มลงทะเบียน</a></li>
-          <li><a href="#tabs-2">2-รายชื่อนิสิต(ALL)</a></li>
-          <li><a href="#tabs-3">3-ข้อมูลนิสิต</a></li>
-        </ul>
-        <div id="tabs-1">
-            
+          <li><a href="#tabs-1">1-แบบฟอร์มlogin </a></li>
+        </ul> 
+        <div id="tabs-1">  
+
         <form id="my-form">
-            <input type="text" id="txtStudentID" name="txtStudentID" placeholder="รหัสนิสิต" />
-            <br/>
-            <input type="text" id="txtName" name="txtName" placeholder="ชื่อ-นามสกุล" />
-            <br/>
             <input type="text" id="txtEmail" name="txtEmail" placeholder="Email" />
             <br/>
             <input type="password" id="txtPassword" name="txtPassword" placeholder="รหัสผ่าน" />
             <br/>
             <input type="button" id="btnSubmit" value="Submit"/>
         </form>
- 
-        </div>
-        <div id="tabs-2">
-          <button class="ui-button ui-widget ui-corner-all" id="btnRequest">Load</button>
-          <div id="myDynamicTable"></div>
-        </div>
-        <div id="tabs-3">
-        
-        </div>
     </div><!-- tabs-->
 
 </body>
 </html>
 
+<!--CSS-->
+<link rel="stylesheet" href="/jquery-ui/themes/base/jquery-ui.css">
+
+<!--Javascript-->
+<script src="/jquery/jquery.min.js"></script>
+<script src="/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript">
+    //btnSubmit
+    $('#btnSubmit').click( function(){
+          //console.log("Submit");
+          $.ajax({
+            method: "POST",
+            url: "https://tools.ecpe.nu.ac.th/network/api/login",
+            dataType : 'json',
+            headers: { 
+              'Content-Type': 'application/json',
+              "Accepts": "application/json",
+            },
+            data:JSON.stringify( { "name": $('#txtName').val(), "student_id": $('#txtStudentID').val(), "email": $('#txtEmail').val(), "password": $('#txtPassword').val() } ),
+            success: function(data){
+              console.log(data);
+             
+            }
+          });
+
+        });
+
     $(document).ready(function () {
        console.log("Onload");
 
@@ -63,33 +65,9 @@
                //console.log(tabIndex);
                if (tabIndex == 0) {
                    console.log("tabs-1");
-               }else if(tabIndex == 1){
-                   console.log("tabs-2");
-               }else if(tabIndex == 2){
-                   console.log("tabs-3");
                }
            }
        });
-
-      //btnSubmit
-      $('#btnSubmit').click( function(){
-        //console.log("Submit");
-        $.ajax({
-          method: "POST",
-          url: "https://tools.ecpe.nu.ac.th/network/api/register",
-          dataType : 'json',
-          headers: { 
-            'Content-Type': 'application/json',
-            "Accepts": "application/json",
-          },
-          data:JSON.stringify( { "name": $('#txtName').val(), "student_id": $('#txtStudentID').val(), "email": $('#txtEmail').val(), "password": $('#txtPassword').val() } ),
-          success: function(data){
-            console.log(data);
-     
-          }
-        });
-
-      });
 
        //btnRequest
        $('#btnRequest').click( function(){
@@ -101,7 +79,7 @@
            headers: { 
              'Content-Type': 'application/json',
              "Accepts": "application/json",
-             "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90b29scy5lY3BlLm51LmFjLnRoXC9uZXR3b3JrXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjU5MjU3NTIxLCJleHAiOjE2NTkyNjExMjEsIm5iZiI6MTY1OTI1NzUyMSwianRpIjoiQ2hOVjZzN1dHQTZTc2JwRiIsInN1YiI6MTEwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.H_xe8ho6JD3fw6Lx8uY2scdCNsxqOt9iBAExba4fT3s",
+             "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90b29scy5lY3BlLm51LmFjLnRoXC9uZXR3b3JrXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjU5MjYzNDc5LCJleHAiOjE2NTkyNjcwNzksIm5iZiI6MTY1OTI2MzQ3OSwianRpIjoibXU4V2Y0djJYYlUzM1ZwSSIsInN1YiI6MTEwLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.NwxG19Doe4bXsV_aTfvX4nlPK4PnTuXMeW2loRT2KLw",
            },
            success: function(data){
              console.log(data);
@@ -114,7 +92,6 @@
        });
     });
 </script>
-
 <script type="text/javascript">
 
     var TableBackgroundMouseoverColor = "#b8663d";
@@ -259,4 +236,3 @@
       alert(fullname);
     }
   </script>
-
